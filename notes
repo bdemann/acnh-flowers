@@ -1,0 +1,43 @@
+blue rose 0xfc 252 0b11111100 RRYYwwss is a First generation
+The parents are red rose 0x7c 124 0b01111100 RrYYwwss and orange rose 0xf4 244 0b11110100 RRYYWwss
+The parents are red rose 0x7c 124 0b01111100 RrYYwwss and black rose 0xdc 220 0b11011100 RRYywwss
+The parents are red rose 0x7c 124 0b01111100 RrYYwwss and red rose 0x7c 124 0b01111100 RrYYwwss
+The parents are black rose 0xdc 220 0b11011100 RRYywwss and orange rose 0xf4 244 0b11110100 RRYYWwss
+The parents are black rose 0xdc 220 0b11011100 RRYywwss and black rose 0xdc 220 0b11011100 RRYywwss
+The parents are orange rose 0xf4 244 0b11110100 RRYYWwss and orange rose 0xf4 244 0b11110100 RRYYWwss
+
+If red on red, or orange on orange, or black on black works then there is no reason to look at red on orange or red of black or orange on black... it will be easier to just get one and duplicate it. We are already familiar with 0x7c and 0x3c. That orange 0x74 is the path that we took. And that white 0x3c was a nightmare to get... If we could find an easy way to get 0x3c than that would be something... because it was the hardest. Well not even it was the purples that it required that made it tricky...
+
+red rose 0x7c 124 0b01111100 RrYYwwss is a First generation
+The parents are red rose 0x5c 92 0b01011100 RrYywwss and white rose 0x3c 60 0b00111100 rrYYwwss
+The parents are orange rose 0x74 116 0b01110100 RrYYWwss and white rose 0x3c 60 0b00111100 rrYYwwss
+
+orange rose 0xf4 244 0b11110100 RRYYWwss is a First generation
+The parents are red rose 0x5c 92 0b01011100 RrYywwss and orange rose 0xf0 240 0b11110000 RRYYwwss
+
+black rose 0xdc 220 0b11011100 RRYywwss is a First generation
+The parents are red rose 0x5c 92 0b01011100 RrYywwss and black rose 0xcc 204 0b11001100 RRyywwss
+
+
+
+Alright lets take a quick look at white 3c
+white rose 0x3c 60 0b00111100 rrYYwwss is a First generation
+The parents are purple rose 0x1c 28 0b00011100 rrYywwss and yellow rose 0x34 52 0b00110100 rrYYWwss This makes two whites. What's the point
+The parents are purple rose 0x1c 28 0b00011100 rrYywwss and purple rose 0x1c 28 0b00011100 rrYywwss This is the one that I am all too familiar with
+The parents are yellow rose 0x34 52 0b00110100 rrYYWwss and yellow rose 0x34 52 0b00110100 rrYYWwss This could be. two yellows and a white isn't bad
+
+So at this point we can see if there is an easier way to get that puple 1c or if the yellow 34 is easy to get. No the yellow is not great...
+
+
+Aug 12
+Taking a break from Roses lets look at the other flowers
+Here is the process that I am developing for finding paths. It's not perfect but its something
+I take the all of the flowers that I want to get and I look at all of their possible parents. 
+I take all of those parents and pick the ones that are easiest to get.
+I repeat the process with those flowers
+
+So for purple hyacinths I put all of the purple hyacs through the process and found all of their parents
+Then I ran looked at all of their parents with the possible mates and I picked only the ones that were mating with themselves
+Then I put all of those flowers as the flowers I wanted and looked at all of their parents
+I found that red and yellow seeds have a 50% change of producing an orange that has a 6% chance of producing a purple... Its not a good chance but it is only two steps...
+I may take a closer look at the other parents and see if I can see some better options.

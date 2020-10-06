@@ -1,0 +1,695 @@
+#!/usr/bin/python3
+
+import random
+
+#TODO get all of the mates with the parents for the child
+#TODO then run the percentages and pick the best set of parents to produce the child we want
+#TODO repeat until we get the right child
+
+testing = False
+
+ROSE = 'rose'
+MUM = 'mum'
+COSMOS = 'cosmos'
+PANSY = 'pansy'
+TULIP = 'tulip'
+WIND = 'windflower'
+LILY = 'lily'
+HYAC = 'hyacinth'
+FLOWER_TYPES = [ROSE, MUM, COSMOS, PANSY, TULIP, WIND, LILY, HYAC]
+
+ROSE_GENOMES = {0x00: 'white', 0x01: 'white', 0x03: 'white', 0x04: 'white', 0x05: 'white', 0x07: 'white', 0x0c: 'purple', 0x0d: 'purple', 0x0f: 'purple', 0x10: 'yellow', 0x11: 'yellow', 0x13: 'yellow', 0x14: 'white', 0x15: 'white', 0x17: 'white', 0x1c: 'purple', 0x1d: 'purple', 0x1f: 'purple', 0x30: 'yellow', 0x31: 'yellow', 0x33: 'yellow', 0x34: 'yellow', 0x35: 'yellow', 0x37: 'yellow', 0x3c: 'white', 0x3d: 'white', 0x3f: 'white', 0x40: 'red', 0x41: 'pink', 0x43: 'white', 0x44: 'red', 0x45: 'pink', 0x47: 'white', 0x4c: 'red', 0x4d: 'pink', 0x4f: 'purple', 0x50: 'orange', 0x51: 'yellow', 0x53: 'yellow', 0x54: 'red', 0x55: 'pink', 0x57: 'white', 0x5c: 'red', 0x5d: 'pink', 0x5f: 'purple', 0x70: 'orange', 0x71: 'yellow', 0x73: 'yellow', 0x74: 'orange', 0x75: 'yellow', 0x77: 'yellow', 0x7c: 'red', 0x7d: 'pink', 0x7f: 'white', 0xc0: 'black', 0xc1: 'red', 0xc3: 'pink', 0xc4: 'black', 0xc5: 'red', 0xc7: 'pink', 0xcc: 'black', 0xcd: 'red', 0xcf: 'pink', 0xd0: 'orange', 0xd1: 'orange', 0xd3: 'yellow', 0xd4: 'red', 0xd5: 'red', 0xd7: 'white', 0xdc: 'black', 0xdd: 'red', 0xdf: 'purple', 0xf0: 'orange', 0xf1: 'orange', 0xf3: 'yellow', 0xf4: 'orange', 0xf5: 'orange', 0xf7: 'yellow', 0xfc: 'blue', 0xfd: 'red', 0xff: 'white'}
+PANSY_GENOMES = {0x00: 'white', 0x01: 'white', 0x03: 'blue', 0x04: 'yellow', 0x05: 'yellow', 0x07: 'blue', 0x0c: 'yellow', 0x0d: 'yellow', 0x0f: 'yellow', 0x10: 'red', 0x11: 'red', 0x13: 'blue', 0x14: 'orange', 0x15: 'orange', 0x17: 'orange', 0x1c: 'yellow', 0x1d: 'yellow', 0x1f: 'yellow', 0x30: 'red', 0x31: 'red', 0x33: 'purple', 0x34: 'red', 0x35: 'red', 0x37: 'purple', 0x3c: 'orange', 0x3d: 'orange', 0x3f: 'purple'}
+HYAC_GENOMES = {0x00: 'white', 0x01: 'white', 0x03: 'blue', 0x04: 'yellow', 0x05: 'yellow', 0x07: 'white', 0x0c: 'yellow', 0x0d: 'yellow', 0x0f: 'yellow', 0x10: 'red', 0x11: 'pink', 0x13: 'white', 0x14: 'orange', 0x15: 'yellow', 0x17: 'yellow', 0x1c: 'orange', 0x1d: 'yellow', 0x1f: 'yellow', 0x30: 'red', 0x31: 'red', 0x33: 'red', 0x34: 'blue', 0x35: 'red', 0x37: 'red', 0x3c: 'purple', 0x3d: 'purple', 0x3f: 'purple'}
+WIND_GENOMES = {0x00: 'white', 0x01: 'white', 0x03: 'blue', 0x04: 'orange', 0x05: 'orange', 0x07: 'blue', 0x0c: 'orange', 0x0d: 'orange', 0x0f: 'orange', 0x10: 'red', 0x11: 'red', 0x13: 'blue', 0x14: 'pink', 0x15: 'pink', 0x17: 'pink', 0x1c: 'orange', 0x1d: 'orange', 0x1f: 'orange', 0x30: 'red', 0x31: 'red', 0x33: 'purple', 0x34: 'red', 0x35: 'red', 0x37: 'purple', 0x3c: 'pink', 0x3d: 'pink', 0x3f: 'purple'}
+MUM_GENOMES = {0x3c: 'green', 0x3d: 'green', 0x10: 'pink', 0x11: 'pink', 0x13: 'pink', 0x17: 'pink', 0x03: 'purple', 0x1c: 'purple', 0x1d: 'purple', 0x1f: 'purple', 0x34: 'purple', 0x35: 'purple', 0x15: 'red', 0x31: 'red', 0x33: 'red', 0x37: 'red', 0x3f: 'red', 0x30: 'red', 0x00: 'white', 0x07: 'white', 0x01: 'white', 0x04: 'yellow', 0x05: 'yellow', 0x0d: 'yellow', 0x0f: 'yellow', 0x14: 'yellow', 0x0c: 'yellow'}
+
+ROSE_SEEDS = [0xc1, 0x04, 0x30]
+PANSY_SEEDS = [0x01, 0x0c, 0x30]
+HYAC_SEEDS = [0x01, 0x0c, 0x31]
+WIND_SEEDS = [0x01, 0x0c, 0x30]
+MUM_SEEDS = [0x01, 0x0c, 0x30]
+
+ROSE_COLORS = ['red', 'white', 'yellow', 'black', 'purple', 'orange', 'pink', 'blue']
+PANSY_COLORS = ['red', 'white', 'yellow', 'orange', 'purple', 'blue']
+HYAC_COLORS = ['red', 'white', 'yellow', 'pink', 'purple', 'blue']
+WIND_COLORS = ['red', 'white', 'orange', 'pink', 'purple', 'blue']
+MUM_COLORS = ['red', 'white', 'yellow', 'purple', 'pink', 'green']
+
+SEEDS = 0
+COLORS = 1
+GENOMES = 2
+FLOWER_INFO = {
+    ROSE: (ROSE_SEEDS, ROSE_COLORS, ROSE_GENOMES),
+    PANSY: (PANSY_SEEDS, PANSY_COLORS, PANSY_GENOMES),
+    HYAC: (HYAC_SEEDS, HYAC_COLORS, HYAC_GENOMES),
+    WIND: (WIND_SEEDS, WIND_COLORS, WIND_GENOMES),
+    MUM: (MUM_SEEDS, MUM_COLORS, MUM_GENOMES)
+}
+
+def hex(number, padding=4):
+    return '{0:#0{1}x}'.format(number, padding)
+
+def bin(number, padding):
+    return '{0:#0{1}b}'.format(number, padding)
+
+class ComboReport(object):
+
+    def __init__(self, allCombos):
+        self.allCombos = allCombos
+        self.uniqueCombos = list(set(allCombos))
+        self.report = []
+        for combo in self.uniqueCombos:
+            self.report.append((combo, allCombos.count(combo)/len(allCombos) * 100))
+
+def testgetCombos():
+    if not getCombos(0b11, 0b11) == [3, 3, 3, 3]:
+        print('error combining 0b11 and 0b11')
+    if not getCombos(0b01, 0b01) == [3, 1, 1, 0]:
+        print('error combining 0b01 and 0b01')
+    if not getCombos(0b00, 0b00) == [0, 0, 0, 0]:
+        print('error combining 0b00 and 0b00')
+    if not getCombos(0b00, 0b11) == [1, 1, 1, 1]:
+        print('error combining 0b00 and 0b11')
+    if not getCombos(0b11, 0b00) == [1, 1, 1, 1]:
+        print('error combining 0b00 and 0b11')
+    if not getCombos(0b01, 0b11) == [3, 3, 1, 1]:
+        print('error combining 0b00 and 0b11')
+    if not getCombos(0b11, 0b01) == [3, 3, 1, 1]:
+        print('error combining 0b00 and 0b11')
+    print('Finish combo tests')
+
+class Flower(object):
+
+    def __init__(self, genome, flowerType):
+        self.genome = genome
+        if flowerType in FLOWER_TYPES:
+            self.flowerType = flowerType
+        else:
+            raise Exception('{} is not a valid flower type. Accepted flower types are {}'.format(flowerType, FLOWER_TYPES))
+
+    def __eq__(self, other):
+        return self.genome == other.genome
+
+    def __lt__(self, other):
+        return self.genome < other.genome
+
+    def __hash__(self):
+        return self.genome + hash(self.flowerType)
+
+    def _isRose(self):
+        return self.flowerType == ROSE
+
+    def _isWind(self):
+        return self.flowerType == WIND
+
+    @property
+    def r(self):
+        if self._isRose():
+            return self.genome >> 6
+        else:
+            return self.genome >> 4
+
+    @property
+    def y(self):
+        if self._isRose():
+            return self.genome >> 4 & 0b0011
+        else:
+            return self.genome >> 2 & 0b000011
+
+    @property
+    def o(self):
+        if self._isWind():
+            return self.y
+        else:
+            raise Exception('Only {} has o'.format(WIND))
+
+    @property
+    def w(self):
+        if self._isRose():
+            return self.genome >> 2 & 0b000011
+        else:
+            return self.genome & 0b00000011
+
+    @property
+    def s(self):
+        if self._isRose():
+            return self.genome & 0b00000011
+        else:
+            return 0
+
+    def genomeToString(self):
+        return (
+            self.getAlleles(self.r, 'r')
+            + self.getAlleles(self.y, ('o' if self._isWind() else 'y'))
+            + self.getAlleles(self.w, 'w')
+            + (self.getAlleles(self.s, 's') if self._isRose() else '')
+        )
+
+    def genomeToHex(self):
+        return hex(self.genome, padding = 4)
+
+    def genomeToBin(self):
+        return bin(self.genome, padding = 10 if self._isRose() else 8)
+
+    def getAlleles(self, number, letter):
+        if number == 0 or (letter.lower() == 'w' and number == 3):
+            return (letter + letter).lower()
+        elif number == 3 or (letter.lower() == 'w' and number == 0):
+            return (letter + letter).upper()
+        elif number == 1:
+            return letter.upper() + letter.lower()
+
+    def getParents(self):
+        rs = getPossibleParents(self.r)
+        ys = getPossibleParents(self.y)
+        ws = getPossibleParents(self.w)
+        ss = getPossibleParents(self.s) if self._isRose() else [0]
+        return self.determinePossibleFlowers(rs, ys, ws, ss)
+
+    def determinePossibleFlowers(self, rs, ys, ws, ss):
+        if not rs or not ys or not ws or not ss:
+            return None
+        possibleFlowers = []
+        for pr in rs:
+            for py in ys:
+                for pw in ws:
+                    for ps in ss:
+                        genome = rPart(pr, self._isRose()) + yPart(py, self._isRose()) + wPart(pw, self._isRose()) + sPart(ps, self._isRose())
+                        possibleFlowers.append(Flower(genome, self.flowerType))
+        return possibleFlowers
+
+    def getMates(self, child):
+        rs = getPossibleMate(self.r, child.r)
+        ys = getPossibleMate(self.y, child.y)
+        ws = getPossibleMate(self.w, child.w)
+        ss = getPossibleMate(self.s, child.s) if self._isRose() else [0]
+        return self.determinePossibleFlowers(rs, ys, ws, ss)
+
+    def combine(self, mate):
+        if testing:
+            print(bin(self.r))
+            print(bin(self.y))
+            print(bin(self.w))
+            print(bin(self.s))
+        if testing:
+            print(self.r, mate.r, self.y, mate.y, self.w, mate.w, self.s, mate.s)
+        rCombos = getCombos(self.r, mate.r)
+        yCombos = getCombos(self.y, mate.y)
+        wCombos = getCombos(self.w, mate.w)
+        sCombos = getCombos(self.s, mate.s) if self._isRose() else [0]
+
+        poss = []
+        for r in rCombos:
+            for y in yCombos:
+                for w in wCombos:
+                    for s in sCombos:
+                        poss.append(Flower(rPart(r, self._isRose()) | yPart(y, self._isRose()) | wPart(w, self._isRose()) | sPart(s, self._isRose()), self.flowerType))
+        return ComboReport(poss).report
+        return poss
+
+    def __str__(self):
+        return '{}{} {} {} {} {} {}'.format(
+            FLOWER_INFO[self.flowerType][GENOMES][self.genome],
+            (' (seed)' if self.genome in FLOWER_INFO[self.flowerType][SEEDS] else ''),
+            self.flowerType, self.genomeToHex(),
+            self.genome,
+            self.genomeToBin(),
+            self.genomeToString()
+        )
+
+def getCombos(gene1, gene2):
+    if not gene1 in [0, 1, 3]:
+        raise Exception('Invaid Gene 1', gene1)
+    if not gene2 in [0, 1, 3]:
+        raise Exception('Invaid Gene 2', gene2)
+    if gene1 == 3 and gene2 == 3:
+        return [3, 3, 3, 3]
+    if gene1 == 3 and gene2 == 1:
+        return [3, 3, 1, 1]
+    if gene1 == 3 and gene2 == 0:
+        return [1, 1, 1, 1]
+    if gene1 == 1 and gene2 == 3:
+        return [3, 3, 1, 1]
+    if gene1 == 1 and gene2 == 1:
+        return [3, 1, 1, 0]
+    if gene1 == 1 and gene2 == 0:
+        return [1, 1, 0, 0]
+    if gene1 == 0 and gene2 == 3:
+        return [1, 1, 1, 1]
+    if gene1 == 0 and gene2 == 1:
+        return [1, 1, 0, 0]
+    if gene1 == 0 and gene2 == 0:
+        return [0, 0, 0, 0]
+
+def getPossibleParents(gene):
+    possibleParents = [1]
+    if gene == 3 or gene == 1:
+        possibleParents.append(3)
+    if gene == 0 or gene == 1:
+        possibleParents.append(0)
+    return possibleParents
+
+def getPossibleMate(gene, child_gene):
+    if child_gene == 0:
+        if gene == 0 or gene == 1:
+            return [0, 1]
+    elif child_gene == 3:
+        if gene == 3 or gene == 1:
+            return [3, 1]
+    elif child_gene == 1:
+        if gene == 1:
+            return [0, 1, 3]
+        elif gene == 0:
+            return [3, 1]
+        elif gene == 3:
+            return [0, 1]
+    return None
+
+def rPart(gene, rose=False):
+    if rose:
+        return gene << 6
+    else:
+        return gene << 4
+
+def yPart(gene, rose=False):
+    if rose:
+        return gene << 4
+    else:
+        return gene << 2
+
+def oPart(gene):
+    return yPart(gene)
+
+def wPart(gene, rose=False):
+    if rose:
+        return gene << 2
+    else:
+        return gene
+
+def sPart(gene, rose=False):
+    if rose:
+        return gene
+    else:
+        return 0
+
+def combosToHex(combos):
+    return [hex(x.genome, 4) for x in combos]
+
+testgetCombos()
+
+r7c_genome = 0b01111100
+r7c = Flower(r7c_genome, ROSE)
+
+if not r7c.genomeToString() == 'RrYYwwss':
+    print('Genome to string broke for {}. Should be {}. Got {}'.format(hex(r7c.genome, 'RrYYwwss', r7c.genomeToString())))
+
+combinations = r7c.combine(r7c)
+combos = [flower.genome for flower in [result[0] for result in combinations]]
+if not len(combos) == 3:
+    print('Too many combos from r7c and r7c')
+if not 0xfc in combos:
+    print('Missing 0xfc from r7c and r7c')
+if not 0x7c in combos:
+    print('Missing 0x7c from r7c and r7c')
+if not 0x3c in combos:
+    print('Missing 0x3c from r7c and r7c')
+
+for combo in combinations:
+    if combo[0].genome == 0xfc:
+        if not combo[1] == 25:
+            print('We have the wrong percentage for 0xfc from r7c. Should be {}. Got {}'.format(25, combo[1]))
+    if combo[0].genome == 0x7c:
+        if not combo[1] == 50:
+            print('We have the wrong percentage for 0xfc from r7c. Should be {}. Got {}'.format(25, combo[1]))
+    if combo[0].genome == 0x3c:
+        if not combo[1] == 25:
+            print('We have the wrong percentage for 0xfc from r7c. Should be {}. Got {}'.format(25, combo[1]))
+
+print('Finish Red 7c test')
+
+blue_rose_genome = 0b11111100
+blue_rose = Flower(blue_rose_genome, ROSE)
+
+if not blue_rose.genomeToString() == 'RRYYwwss':
+    print('Genome to string broke for {}. Should be {}. Got {}'.format(blue_rose.genomeToHex(), 'RRYYwwss', blue_rose.genomeToString()))
+
+correct_blue_parents = [0x54, 0x55, 0x5c, 0x5d, 0x74, 0x75, 0x7c, 0x7d, 0xd4, 0xd5, 0xdc, 0xdd, 0xf4, 0xf5, 0xfc, 0xfd]
+blue_parents = [flower.genome for flower in blue_rose.getParents()]
+if not len(blue_parents) == len(correct_blue_parents):
+    print('Wrong number of blue parents. Should be {}. Got {}'.format(len(correct_blue_parents), len(blue_parents)))
+for parent in correct_blue_parents:
+    if parent not in blue_parents:
+        print('{} {} was not in the list of parents and should be'.format(hex(parent), Flower(parent, ROSE).genomeToString()))
+for parent in blue_parents:
+    if parent not in correct_blue_parents:
+        print('{} {} was in the list of parents and shouldn\'t be'.format(hex(parent), Flower(parent, ROSE).genomeToString()))
+
+parents = blue_rose.getParents()
+
+for parent in parents:
+    mates = parent.getMates(blue_rose)
+    for mate in mates:
+        combos = parent.combine(mate)
+        if not blue_rose.genome in [result[0].genome for result in combos]:
+            print('No blue child for {} and {}. But there should have been'.format(parent, mate))
+
+print('Finish blue test')
+
+correct_percentages = {0xFC: 1.5625, 0xDC: 3.125, 0xCC: 1.5625, 0xC4: 3.125, 0xC0: 1.5625, 0xF4: 3.125, 0xF0: 1.5625, 0xD0: 3.125, 0x74: 6.25, 0x70: 3.125, 0x50: 6.25, 0x3C: 1.5625, 0x14: 6.25, 0x4: 3.125, 0x0: 1.5625, 0x10: 3.125, 0x34: 3.125, 0x30: 1.5625, 0x1C: 3.125, 0xC: 1.5625, 0xD4: 6.25, 0x7C: 3.125, 0x5C: 6.25, 0x54: 12.5, 0x4C: 3.125, 0x44: 6.25, 0x40: 3.125}
+r54 = Flower(0x54, ROSE)
+combinations = r54.combine(r54)
+for combo in combinations:
+    if combo[0].genome in correct_percentages:
+        if not combo[1] == correct_percentages[combo[0].genome]:
+            print('Percentage for {} wrong. Should be {}. Got {}'.format(combo[0], correct_percentages[combo[0].genome], combo[1]))
+            print(combo)
+    else:
+        print('{} in correct_percentages and shouldn\'t be'.format(combo[0]))
+
+combos = [result[0].genome for result in combinations]
+for key in correct_percentages:
+    if not key in combos:
+        print('{} in not correct_percentages and should be'.format(combo[0]))
+
+print('Finish r54 percentage test')
+
+print('Start windflower test')
+
+white_wind_seed = Flower(0x1, WIND)
+combinations = white_wind_seed.combine(white_wind_seed)
+combos = [flower.genome for flower in [result[0] for result in combinations]]
+correct_white_wind_children = [0x1, 0x3, 0x0]
+
+if not len(combos) == len(correct_white_wind_children):
+    print('Wrong number of white wind seed children. Should be {}. Got {}'.format(len(correct_white_wind_children), len(combos)))
+
+for child in combos:
+    if child not in correct_white_wind_children:
+        print('{} in children and shouldn\'t be'.format(hex(child)))
+for child in correct_white_wind_children:
+    if child not in combos:
+        print('{} not in correct and should be'.format(hex(child)))
+
+if not white_wind_seed.genomeToString() == 'rrooWw':
+    print('White wind seed genome wrong. Shoud be {}. Got {}.'.format('rrooWw', white_wind_seed.genomeToString()))
+
+print('Finish white seed tests')
+
+
+print('Blue Wild 3 parents')
+bw3 = Flower(0x3, WIND)
+correct_blue_parents = [0x01, 0x03, 0x05, 0x07, 0x11, 0x13, 0x15, 0x17]
+blue_parents = [flower.genome for flower in bw3.getParents()]
+if not len(blue_parents) == len(correct_blue_parents):
+    print('Wrong number of blue parents. Should be {}. Got {}'.format(len(correct_blue_parents), len(blue_parents)))
+for parent in correct_blue_parents:
+    if parent not in blue_parents:
+        print('{} {} was not in the list of parents and should be'.format(hex(parent), Flower(parent, WIND).genomeToString()))
+for parent in blue_parents:
+    if parent not in correct_blue_parents:
+        print('{} {} was in the list of parents and shouldn\'t be'.format(hex(parent), Flower(parent, WIND).genomeToString()))
+
+print('Blue Wild 13 parents')
+bw13 = Flower(0x13, WIND)
+correct_blue_parents = [0x01, 0x03, 0x05, 0x07, 0x11, 0x13, 0x15, 0x17, 0x31, 0x33, 0x35, 0x37]
+blue_parents = [flower.genome for flower in bw13.getParents()]
+if not len(blue_parents) == len(correct_blue_parents):
+    print('Wrong number of blue parents. Should be {}. Got {}'.format(len(correct_blue_parents), len(blue_parents)))
+for parent in correct_blue_parents:
+    if parent not in blue_parents:
+        print('{} {} was not in the list of parents and should be'.format(hex(parent), Flower(parent, WIND).genomeToString()))
+for parent in blue_parents:
+    if parent not in correct_blue_parents:
+        print('{} {} was in the list of parents and shouldn\'t be'.format(hex(parent), Flower(parent, WIND).genomeToString()))
+
+print('Testing complete')
+print('Running real things')
+
+purple_windflowers = [Flower(0x33, WIND), Flower(0x37, WIND), Flower(0x3f, WIND)]
+#for pwf in purple_windflowers:
+#    for parent in pwf.getParents():
+#        print(parent)
+
+parents = blue_rose.getParents()
+
+for parent in parents:
+    mates = parent.getMates(blue_rose)
+    for mate in mates:
+        combos = parent.combine(mate)
+        for result in combos:
+            if result[0] == blue_rose and not parent == blue_rose and not mate == blue_rose:
+                if result[1] >= 25:
+                    print('{} and {} have a {}% change at getting {}'.format(parent, mate, result[1], result[0]))
+        if not blue_rose.genome in [result[0].genome for result in combos]:
+            print('No blue child for {} and {}. But there should have been'.format(parent, mate))
+
+class Node(object):
+
+    def __init__(self, flower, generation, mate=None, child=None, p1=None, p2=None):
+        self.flower = flower
+        self.generation = generation
+        self.mate = mate
+        self.child = child
+        self.p1 = p1
+        self.p2 = p2
+
+    def __eq__(self, other):
+        return self.flower.genome == other.flower.genome
+
+    def __str__(self):
+        return '{} at generation {} with parents {} and {}'.format(self.flower, self.generation, self.p1, self.p2)
+
+def duplicateColors(children, max_duplicates):
+    #If its empty there aren't any duplicates
+    if not children:
+        return False
+    childrens_colors = [FLOWER_INFO[children[0].flowerType][GENOMES][flower.genome] for flower in children]
+    for color in FLOWER_INFO[children[0].flowerType][COLORS]:
+        if childrens_colors.count(color) > max_duplicates:
+            return True
+
+class FlowerCalculator(object):
+
+    def __init__(self, max_generations, max_duplicates, max_children):
+        self.max_generations = max_generations
+        self.max_duplicates = max_duplicates
+        self.max_children = max_children
+
+    def traverse_graph(self, node):
+        tabs = '\t' * node.generation
+        print('{}{} of generation {}'.format(tabs, node.flower, node.generation))
+        if node.p1:
+            print('{}And parent 1 of {}'.format(tabs, node.flower.genome))
+            self.traverse_graph(node.p1)
+        if node.p2:
+            print('{}And parent 2 of {}'.format(tabs, node.flower.genome))
+            self.traverse_graph(node.p2)
+
+    def run(self, flower):
+        possible_paths = self.nextGeneration(Node(flower, 0))
+        if not possible_paths:
+            print('We didnt find a path')
+        for path in possible_paths:
+            print('This is one possiblity')
+            if type(path) == tuple:
+                for node in path:
+                    if type(node) == tuple:
+                        for thing in node:
+                            self.traverse_graph(thing)
+                    else:
+                        self.traverse_graph(node)
+            else:
+                self.traverse_graph(path)
+                print(type(path))
+        print('These are all of the possible paths')
+
+    def inThisBranch(self, node, child):
+        if not child:
+            return False
+        elif node == child:
+            return True
+        else:
+            return self.inThisBranch(node, child.child)
+
+    def nextGeneration(self, node):
+        if node.flower.genome in FLOWER_INFO[node.flower.flowerType][SEEDS]:
+            return [node]
+        if node.generation > self.max_generations:
+            return []
+        parents = node.flower.getParents()
+        possiblePairings = []
+        for parent in parents:
+
+            parent_node = Node(parent, node.generation + 1)
+
+            if self.inThisBranch(parent_node, node):
+                continue
+
+            seed_parents = self.nextGeneration(parent_node)
+            # If this parent has not seed parents then there is no sense checking any of it's mates
+            if not seed_parents:
+                continue
+
+            mates = parent.getMates(node.flower)
+            for mate in mates:
+
+                mate_node = Node(mate, node.generation + 1)
+
+                if self.inThisBranch(mate_node, node):
+                    continue
+
+                children = parent.combine(mate)
+                if len(children) > self.max_children:
+                    continue
+                if duplicateColors([result[0] for result in children], self.max_duplicates):
+                    continue
+
+                #print('We are looking at children for {} and {}'.format(parent, mate))
+                #for child in children:
+                #    if child[0] == node.flower:
+                #        print('{} {}%'.format(child[0], child[1]))
+
+                seed_mates = self.nextGeneration(mate_node)
+
+                if not seed_mates:
+                    continue
+
+                for seed_parent in seed_parents:
+                    for seed_mate in seed_mates:
+                        possiblePairings.append((seed_parent, seed_mate))
+            if possiblePairings:
+                random_pairing = random.randint(0, len(possiblePairings) - 1)
+                possiblePairings = [possiblePairings[random_pairing]]
+        return possiblePairings
+
+import time
+black_rose = Flower(0xc0, ROSE)
+red_seed_rose = Flower(0xC1, ROSE)
+fc = FlowerCalculator(1, 2, 4)
+print('Use https://currentmillis.com/ to calculate')
+print('Start time {}'.format(int(round(time.time() * 1000))))
+fc.run(red_seed_rose)
+fc.run(black_rose)
+print('End time {}'.format(int(round(time.time() * 1000))))
+print('Start Blue rose')
+fc = FlowerCalculator(10, 1, 4)
+print('Start Blue rose')
+print('Start time {}'.format(int(round(time.time() * 1000))))
+#fc.run(blue_rose)
+print('End time {}'.format(int(round(time.time() * 1000))))
+
+class FlowerParents(object):
+
+    def __init__(self):
+        return
+
+    def run(self, seeds, all_flower_genomes, flower_type, max_duplicates = 1, no_max = False, report=False):
+        generation = []
+        for genome in all_flower_genomes:
+            if genome in seeds:
+                continue
+            flower = Flower(genome, flower_type)
+            parents = flower.getParents()
+            for parent in parents:
+                if parent.genome in seeds:
+                    mates = parent.getMates(flower)
+                    for mate in mates:
+                        if mate.genome in seeds:
+                            children = parent.combine(mate)
+                            if len(children) < 5 and (not duplicateColors([result[0] for result in children], max_duplicates) or no_max):
+                                generation.append(flower.genome)
+                                if report:
+                                    print('{} is a First generation'.format(flower))
+                                    print('The parents are {} and {}'.format(parent, mate))
+                                    for child in children:
+                                        print('The siblings are {} at {}'.format(child[0], child[1]))
+
+        return sorted(list(set(generation)))
+
+def print_gen(generation, flower_type, gen=1):
+    print("THIS IS GENERATION {}".format(gen))
+    for genome in generation:
+        flower = Flower(genome, flower_type)
+        print(flower)
+
+def run_gens(num_gens, flower_type, max_duplicates=1, report=False):
+    fp = FlowerParents()
+    seeds = FLOWER_INFO[flower_type][SEEDS]
+    genomes = FLOWER_INFO[flower_type][GENOMES]
+    flowers = [] + seeds
+    for gen in range(num_gens):
+        print(gen)
+        print(num_gens)
+        print(num_gens == gen)
+        next_gen = fp.run(flowers, genomes, flower_type, max_duplicates=max_duplicates, no_max=gen == num_gens - 1, report=report)
+        print(next_gen)
+        print_gen(next_gen, flower_type, gen + 1)
+        flowers = flowers + next_gen
+
+#run_gens(3, MUM)
+#run_gens(3, HYAC, report=True, max_duplicates=2)
+#run_gens(3, WIND)
+#run_gens(3, PANSY)
+#fc = FlowerCalculator(4, 1, 10)
+#fc.run(Flower(60, HYAC))
+
+purple_hyacs = [0x3c,0x3d,0x3f]
+purple_hyacs = [20, 21, 23, 28, 29, 31, 52, 53, 55]
+parents = [20, 21, 23, 28, 29, 31, 52, 53, 55, 60, 61, 63]
+parents = [0, 1, 3, 4, 5, 7, 12, 13, 15, 16, 17, 19, 20, 21, 23, 28, 29, 31, 48, 49, 51, 52, 53, 55, 60, 61, 63]
+pairs = []
+for parent in parents:
+    if parent in purple_hyacs:
+        continue
+    parent = Flower(parent, HYAC)
+    for ph in purple_hyacs:
+        mates = parent.getMates(Flower(ph, HYAC))
+        if mates:
+            for mate in mates:
+                if mate.genome in purple_hyacs:
+                    continue
+                pairs.append(tuple(sorted([parent, mate])))
+
+unsorted = [0x0f, 0x05, 0x00, 0x0c]
+flowers = []
+for genome in unsorted:
+    flowers.append(Flower(genome, ROSE))
+print('sorting test')
+for flower in sorted(flowers):
+    print(flower)
+print('Start printing pairs')
+for pair in sorted(list(set(pairs)), key=lambda x: x[0]):
+    print('{} and {}'.format(pair[0], pair[1]))
+print('finish pring pairs')
+
+parents = []
+for ph in purple_hyacs:
+    flower = Flower(ph, HYAC)
+    print('parents for {}'.format(flower))
+    for parent in flower.getParents():
+        parents.append(parent.genome)
+        print('\t{}'.format(parent))
+print(sorted(list(set(parents))))
+
+print('first generation')
+for result in Flower(12, HYAC).combine(Flower(49, HYAC)):
+    print('{} {}'.format(result[0], result[1]))
+print('second generation')
+for result in Flower(20, HYAC).combine(Flower(20, HYAC)):
+    print('{} {}'.format(result[0], result[1]))
+print('test generation')
+for result in Flower(20, HYAC).combine(Flower(20, HYAC)):
+    print('{} {}'.format(result[0], result[1]))
+print('>>>>>>>>>>>>>>>>>>This is what happens when you mix the wrong yellow')
+for result in Flower(0x15, HYAC).combine(Flower(0x11, HYAC)):
+    print('{} {}'.format(result[0], result[1]))
+print('>>>>>>>>>>>>>>>>>>This is what happens when you mix the right yellow')
+for result in Flower(12, HYAC).combine(Flower(0x11, HYAC)):
+    print('{} {}'.format(result[0], result[1]))
+
+# If we go back more than g generations stop
+# If the chance of getting the child is less than p percent stop
+# If the parent is already one of the children, stop (Note: don't look in all branches just look in the current branch (for example the w3c is used a lot for my blue path)
+# If the parents produce more than x children stop (This will probably be caught with the percentage check)
+# If the parents produce more than y children with the same color as desired child stop

@@ -1,0 +1,55 @@
+MUMS
+	yellow
+		yellow mum 0x14 20 0b010100 RrYyww is a First generation
+		The parents are red (seed) mum 0x30 48 0b110000 RRyyww and yellow (seed) mum 0x0c 12 0b001100 rrYYww
+			The siblings are yellow mum 0x14 20 0b010100 RrYyww at 100.0
+	pink
+		pink mum 0x10 16 0b010000 Rryyww is a First generation
+		The parents are yellow mum 0x14 20 0b010100 RrYyww and red (seed) mum 0x30 48 0b110000 RRyyww
+			The siblings are pink mum 0x10 16 0b010000 Rryyww at 25.0
+			The siblings are red (seed) mum 0x30 48 0b110000 RRyyww at 25.0
+			The siblings are yellow mum 0x14 20 0b010100 RrYyww at 25.0
+			The siblings are purple mum 0x34 52 0b110100 RRYyww at 25.0
+	purple
+		purple mum 0x34 52 0b110100 RRYyww is a First generation
+		The parents are yellow mum 0x14 20 0b010100 RrYyww and red (seed) mum 0x30 48 0b110000 RRyyww
+			The siblings are pink mum 0x10 16 0b010000 Rryyww at 25.0
+			The siblings are red (seed) mum 0x30 48 0b110000 RRyyww at 25.0
+			The siblings are yellow mum 0x14 20 0b010100 RrYyww at 25.0
+			The siblings are purple mum 0x34 52 0b110100 RRYyww at 25.0
+	green
+		green mum 0x3c 60 0b111100 RRYYww is a First generation
+		The parents are purple mum 0x34 52 0b110100 RRYyww and purple mum 0x34 52 0b110100 RRYyww
+			The siblings are purple mum 0x34 52 0b110100 RRYyww at 50.0
+			The siblings are red (seed) mum 0x30 48 0b110000 RRyyww at 25.0
+			The siblings are green mum 0x3c 60 0b111100 RRYYww at 25.0
+
+HYACS
+	pink
+		pink hyacinth 0x11 17 0b010001 RryyWw is a First generation
+		The parents are red (seed) hyacinth 0x31 49 0b110001 RRyyWw and white (seed) hyacinth 0x01 1 0b000001 rryyWw
+			The siblings are pink hyacinth 0x11 17 0b010001 RryyWw at 50.0
+			The siblings are white hyacinth 0x13 19 0b010011 Rryyww at 25.0
+			The siblings are red hyacinth 0x10 16 0b010000 Rryyww at 25.0
+	purple
+		purple hyacinth 0x3c 60 0b111100 RRYYww is a second generation
+		The parents are orange hyacinth 0x14 20 0b011100 RrYYww and orange hyacinth 0x14 20 0b011100 RrYYww
+			purple hyacinth 0x3c 60 0b111100 RRYYww at 6.25
+			orange hyacinth 0x1c 28 0b011100 RrYYww at 12.5
+			white hyacinth 0x00 0 0b000000 rryyww at 6.25
+			yellow hyacinth 0x04 4 0b000100 rrYyww at 12.5
+			blue hyacinth 0x34 52 0b110100 RRYyww at 12.5
+			yellow (seed) hyacinth 0x0c 12 0b001100 rrYYww at 6.25
+			red hyacinth 0x30 48 0b110000 RRyyww at 6.25
+			red hyacinth 0x10 16 0b010000 Rryyww at 12.5
+			orange hyacinth 0x14 20 0b010100 RrYyww at 25.0
+		orange
+			The parents are red (seed) hyacinth 0x31 20 0b011100 RrYYww and yellow (seed) hyacinth 0x0c 20 0b011100 RrYYww
+				orange hyacinth 0x14 20 0b010100 RrYyww 50.0
+				yellow hyacinth 0x15 21 0b010101 RrYyWw 50.0
+
+WIND
+
+PANSY
+
+
